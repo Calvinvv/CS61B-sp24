@@ -20,18 +20,17 @@ public class Model {
      * y = 0 是板的左下角）将对应
      * 更改为 board.tile（x， y）。 小心！
      */
-
-   /** 最大件价值。*/
+    /** 最大件价值。*/
     public static final int MAX_PIECE = 2048;
 
- /** 一个新的 2048 游戏，在大小为 SIZE 的棋盘上，没有棋子
-     * 和得分 0。*/
+    /** 一个新的 2048 游戏，在大小为 SIZE 的棋盘上，没有棋子
+    * 和得分 0。*/
     public Model(int size) {
         board = new Board(size);
         score = 0;
     }
 
-   /** 一个新的 2048 游戏，其中 RAWVALUES 包含图块的值
+    /** 一个新的 2048 游戏，其中 RAWVALUES 包含图块的值
      * （如果为 null，则为 0）。VALUES 由 （x， y） 索引，其中 （0， 0） 对应
      * 到左下角。用于测试目的。*/
     public Model(int[][] rawValues, int score) {
@@ -39,8 +38,7 @@ public class Model {
         this.score = score;
     }
 
-
-  /** 返回 (x, y) 处的当前 Tile，其中 0 <= x < size()，
+    /** 返回 (x, y) 处的当前 Tile，其中 0 <= x < size()，
    * 0 <= y < 大小()。如果那里没有图块，则返回 null。
    * 用于测试。 */
     public Tile tile(int x, int y) {
@@ -64,7 +62,7 @@ public class Model {
         board.clear();
     }
 
-   /** 将 TILE 添加到板中。当前
+    /** 将 TILE 添加到板中。当前
      * 相同位置。*/
     public void addTile(Tile tile) {
         board.addTile(tile);
@@ -88,10 +86,10 @@ public class Model {
         // TODO: Task 2. Fill in this function.
         int size = size();
         boolean empty = false;
-        for(int i=0;i<size;i++){
-          for(int j=0;j<size;j++) {
-            if(tile(i,j)==null) empty = true;
-          }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tile(i, j) == null) empty = true;
+            }
         }
         return empty;
     }
@@ -103,15 +101,15 @@ public class Model {
      */
     public boolean maxTileExists() {
         // TODO: Task 3. Fill in this function.
-      int size = size();
-      boolean maxTile = false;
-      for(int i=0;i<size;i++){
-        for(int j=0;j<size;j++) {
-          if(tile(i,j)==null) continue;
-          if(tile(i,j).value()==MAX_PIECE) maxTile = true;
+        int size = size();
+        boolean maxTile = false;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tile(i, j) == null) continue;
+                if (tile(i, j).value() == MAX_PIECE) maxTile = true;
+            }
         }
-      }
-      return maxTile;
+        return maxTile;
 
 
     }
@@ -124,21 +122,20 @@ public class Model {
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
-        if(emptySpaceExists()) return true;
+        if (emptySpaceExists()) return true;
         int size = size();
-        for(int i=0;i<size-1;i++){
-          for(int j=0;j<size;j++) {
-            if(tile(i,j)==null) continue;
-            if(tile(i,j).value()==tile(i+1,j).value()) return true;
-          }
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tile(i, j) == null) continue;
+                if (tile(i, j).value() == tile(i + 1, j).value()) return true;
+            }
         }
-        for(int i=0;i<size;i++){
-          for(int j=0;j<size-1;j++) {
-            if(tile(i,j)==null) continue;
-            if(tile(i,j).value()==tile(i,j+1).value()) return true;
-          }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (tile(i, j) == null) continue;
+                if (tile(i, j).value() == tile(i, j + 1).value()) return true;
+            }
         }
-
         return false;
     }
 
@@ -160,20 +157,18 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
-        for(int j = y+1;j<board.size();j++){
-          if(tile(x,j)==null) {//空
-            targetY=j;
-          }
-          else if (tile(x,j).value()==currTile.value()&&(!tile(x,j).wasMerged())) {//同
-            targetY=j;
-            score+=tile(x,j).value()*2;
-            break;
-          }
-          else {
-            break;
-          }
+        for (int j = y + 1; j < board.size(); j++) {
+            if (tile(x, j) == null) { //空
+                targetY = j;
+            } else if (tile(x, j).value() == currTile.value() && (!tile(x, j).wasMerged())) { //同
+                targetY = j;
+                score += tile(x, j).value()  * 2;
+                break;
+            } else {
+                break;
+            }
         }
-         board.move(x,targetY,currTile);
+        board.move(x, targetY, currTile);
         // TODO: Tasks 5, 6, and 10. Fill in this function.
     }
 
@@ -184,22 +179,22 @@ public class Model {
      * */
     public void tiltColumn(int x) {
         // TODO: Task 7. Fill in this function.
-      for(int i=board.size()-2;i>=0;i--){
-        if(tile(x,i)!=null) moveTileUpAsFarAsPossible(x,i);
-      }
+        for (int i = board.size() - 2; i >= 0; i--) {
+            if (tile(x, i) != null) moveTileUpAsFarAsPossible(x, i);
+        }
 
     }
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
-      board.setViewingPerspective(side);
-      for(int i=0;i<board.size();i++){
-        tiltColumn(i);
-      }
-      board.setViewingPerspective(Side.NORTH);
+        board.setViewingPerspective(side);
+        for (int i = 0; i < board.size(); i++) {
+            tiltColumn(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
     }
 
-   /** 将电路板的每一列都向 SIDE 倾斜。
+    /** 将电路板的每一列都向 SIDE 倾斜。
      */
     public void tiltWrapper(Side side) {
         board.resetMerged();
