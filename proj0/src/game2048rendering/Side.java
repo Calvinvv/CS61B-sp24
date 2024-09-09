@@ -3,24 +3,24 @@ package game2048rendering;
 /** Symbolic names for the four sides of a board.
  *  @author P. N. Hilfinger */
 public enum Side {
-    /** The parameters (COL0, ROW0, DCOL, and DROW) for each of the
-     *  symbolic directions, D, below are to be interpreted as follows:
-     *     The board's standard orientation has the top of the board
-     *     as NORTH, and rows and columns (see Model) are numbered
-     *     from its lower-left corner. Consider the board oriented
-     *     so that side D of the board is farthest from you. Then
-     *        * (COL0*s, ROW0*s) are the standard coordinates of the
-     *          lower-left corner of the reoriented board (where s is the
-     *          board size), and
-     *        * If (x, y) are the standard coordinates of a certain
-     *          square on the reoriented board, then (x+DCOL, y+DROW)
-     *          are the standard coordinates of the squares immediately
-     *          above it on the reoriented board.
-     *  The idea behind going to this trouble is that by using the
-     *  x() and y() methods below to translate from reoriented to
-     *  standard coordinates, one can arrange to use exactly the same code
-     *  to compute the result of tilting the board in any particular
-     *  direction. */
+    /** 每个
+     * 以下符号指示 D 应解释如下：
+     * 板的标准方向为板的顶部
+     * 替换为 NORTH，并且行和列（请参阅模型）已编号
+     * 从其左下角。考虑面向板
+     * 因此，板的 D 侧离您最远。然后
+     * * （COL0*s， ROW0*s） 是
+     * 重定向板的左下角（其中 S 是
+     * 板大小）和
+     * * 如果 （x， y） 是某个
+     * square，然后 （x+DCOL， y+DROW）
+     * 是正方形的标准坐标
+     * 在重新定位的板上。
+     * 解决这个麻烦背后的想法是，通过使用
+     * x（） 和 y（） 方法从 reoriented 转换为
+     * 标准坐标，可以安排使用完全相同的代码
+     * 计算在任何特定位置倾斜板的结果
+     *方向。*/
 
     NORTH(0, 0, 0, 1),
     EAST(0, 1, 1, 0),

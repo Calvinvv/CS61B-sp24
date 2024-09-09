@@ -11,37 +11,38 @@ import java.util.Formatter;
  *  @author P. N. Hilfinger + Josh Hug
  */
 public class Model {
-    /** Current contents of the board. */
+    /** 板的当前内容。*/
     private final Board board;
-    /** Current score. */
+    /** 当前分数。*/
     private int score;
 
-    /* Coordinate System: column x, row y of the board (where x = 0,
-     * y = 0 is the lower-left corner of the board) will correspond
-     * to board.tile(x, y).  Be careful!
+    /* 坐标系：x列，板的y行（其中x = 0，
+     * y = 0 是板的左下角）将对应
+     * 更改为 board.tile（x， y）。 小心！
      */
 
-    /** Largest piece value. */
+   /** 最大件价值。*/
     public static final int MAX_PIECE = 2048;
 
-    /** A new 2048 game on a board of size SIZE with no pieces
-     *  and score 0. */
+ /** 一个新的 2048 游戏，在大小为 SIZE 的棋盘上，没有棋子
+     * 和得分 0。*/
     public Model(int size) {
         board = new Board(size);
         score = 0;
     }
 
-    /** A new 2048 game where RAWVALUES contain the values of the tiles
-     * (0 if null). VALUES is indexed by (x, y) with (0, 0) corresponding
-     * to the bottom-left corner. Used for testing purposes. */
+   /** 一个新的 2048 游戏，其中 RAWVALUES 包含图块的值
+     * （如果为 null，则为 0）。VALUES 由 （x， y） 索引，其中 （0， 0） 对应
+     * 到左下角。用于测试目的。*/
     public Model(int[][] rawValues, int score) {
         board = new Board(rawValues);
         this.score = score;
     }
 
-    /** Return the current Tile at (x, y), where 0 <= x < size(),
-     *  0 <= y < size(). Returns null if there is no tile there.
-     *  Used for testing. */
+
+  /** 返回 (x, y) 处的当前 Tile，其中 0 <= x < size()，
+   * 0 <= y < 大小()。如果那里没有图块，则返回 null。
+   * 用于测试。 */
     public Tile tile(int x, int y) {
         return board.tile(x, y);
     }
@@ -51,7 +52,7 @@ public class Model {
         return board.size();
     }
 
-    /** Return the current score. */
+    /** 返回当前分数。*/
     public int score() {
         return score;
     }
@@ -63,8 +64,8 @@ public class Model {
         board.clear();
     }
 
-    /** Add TILE to the board. There must be no Tile currently at the
-     *  same position. */
+   /** 将 TILE 添加到板中。当前
+     * 相同位置。*/
     public void addTile(Tile tile) {
         board.addTile(tile);
     }
@@ -85,66 +86,120 @@ public class Model {
      * */
     public boolean emptySpaceExists() {
         // TODO: Task 2. Fill in this function.
-        return false;
+        int size = size();
+        boolean empty = false;
+        for(int i=0;i<size;i++){
+          for(int j=0;j<size;j++) {
+            if(tile(i,j)==null) empty = true;
+          }
+        }
+        return empty;
     }
 
     /**
-     * Returns true if any tile is equal to the maximum valid value.
-     * Maximum valid value is given by this.MAX_PIECE. Note that
-     * given a Tile object t, we get its value with t.value().
+     * 如果任何图块等于最大有效值，则返回 true。
+     * 最大有效值由此给出。MAX_PIECE。请注意，
+     * 给定一个 Tile 对象 t，我们使用 t.value（） 获取其值。
      */
     public boolean maxTileExists() {
         // TODO: Task 3. Fill in this function.
-        return false;
+      int size = size();
+      boolean maxTile = false;
+      for(int i=0;i<size;i++){
+        for(int j=0;j<size;j++) {
+          if(tile(i,j)==null) continue;
+          if(tile(i,j).value()==MAX_PIECE) maxTile = true;
+        }
+      }
+      return maxTile;
+
+
     }
 
     /**
-     * Returns true if there are any valid moves on the board.
-     * There are two ways that there can be valid moves:
-     * 1. There is at least one empty space on the board.
-     * 2. There are two adjacent tiles with the same value.
+     * 如果棋盘上有任何有效的移动，则返回 true。
+     * 有两种方法可以有有效的移动：
+     * 1.棋盘上至少有一个空白区域。
+     * 2.有两个具有相同值的相邻图块。
      */
     public boolean atLeastOneMoveExists() {
         // TODO: Fill in this function.
+        if(emptySpaceExists()) return true;
+        int size = size();
+        for(int i=0;i<size-1;i++){
+          for(int j=0;j<size;j++) {
+            if(tile(i,j)==null) continue;
+            if(tile(i,j).value()==tile(i+1,j).value()) return true;
+          }
+        }
+        for(int i=0;i<size;i++){
+          for(int j=0;j<size-1;j++) {
+            if(tile(i,j)==null) continue;
+            if(tile(i,j).value()==tile(i,j+1).value()) return true;
+          }
+        }
+
         return false;
     }
 
     /**
-     * Moves the tile at position (x, y) as far up as possible.
+     * 将位置 （x， y） 处的图块尽可能向上移动。
      *
-     * Rules for Tilt:
-     * 1. If two Tiles are adjacent in the direction of motion and have
-     *    the same value, they are merged into one Tile of twice the original
-     *    value and that new value is added to the score instance variable
-     * 2. A tile that is the result of a merge will not merge again on that
-     *    tilt. So each move, every tile will only ever be part of at most one
-     *    merge (perhaps zero).
-     * 3. When three adjacent tiles in the direction of motion have the same
-     *    value, then the leading two tiles in the direction of motion merge,
-     *    and the trailing tile does not.
+     * Tilt 规则：
+     * 1.如果两个瓦片在运动方向上相邻，并且具有
+     * 相同的值，它们被合并为一个 Tile 是原始值的两倍
+     * 值，并将该新值添加到 SCORE 实例变量中
+     * 2.作为合并结果的瓦片不会在该
+     *倾斜。因此，每一步、每张图块最多只会成为 1 的一部分
+     * merge （可能为零）。
+     * 3.当运动方向上的三个相邻图块具有相同的
+     * 值，则运动方向上的前两个图块合并，
+     * 和尾随图块则不会。
      */
     public void moveTileUpAsFarAsPossible(int x, int y) {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
-
+        for(int j = y+1;j<board.size();j++){
+          if(tile(x,j)==null) {//空
+            targetY=j;
+          }
+          else if (tile(x,j).value()==currTile.value()&&(!tile(x,j).wasMerged())) {//同
+            targetY=j;
+            score+=tile(x,j).value()*2;
+            break;
+          }
+          else {
+            break;
+          }
+        }
+         board.move(x,targetY,currTile);
         // TODO: Tasks 5, 6, and 10. Fill in this function.
     }
 
-    /** Handles the movements of the tilt in column x of the board
-     * by moving every tile in the column as far up as possible.
-     * The viewing perspective has already been set,
-     * so we are tilting the tiles in this column up.
+    /** 处理电路板 x 列的倾斜运动
+     * 通过将列中的每个图块尽可能向上移动。
+     * 已设置观看视角，
+     * 因此，我们将此列中的图块向上倾斜。
      * */
     public void tiltColumn(int x) {
         // TODO: Task 7. Fill in this function.
+      for(int i=board.size()-2;i>=0;i--){
+        if(tile(x,i)!=null) moveTileUpAsFarAsPossible(x,i);
+      }
+
     }
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+      board.setViewingPerspective(side);
+      for(int i=0;i<board.size();i++){
+        tiltColumn(i);
+      }
+      board.setViewingPerspective(Side.NORTH);
     }
 
-    /** Tilts every column of the board toward SIDE.
+   /** 将电路板的每一列都向 SIDE 倾斜。
      */
     public void tiltWrapper(Side side) {
         board.resetMerged();
