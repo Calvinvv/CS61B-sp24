@@ -78,10 +78,10 @@ public class MachineStage implements AdventureStage {
     }
 
     public static int mysteryMax(int a, int b) {
-        int w = (b - a) >> 31;
+        int w = (b - a) >> 31;//w = 0相当于b > a
         int z = ~(b - a) >> 31;
 
-        int max = b & w | a & z;
+        int max = b & z | a & w;
         return max;
     }
 
@@ -97,7 +97,7 @@ public class MachineStage implements AdventureStage {
             and &= xor;
             xor = temp;
         }
-        return xor;
+        return b;
     }
 
     /**
@@ -133,9 +133,9 @@ public class MachineStage implements AdventureStage {
     }
 
     /**
-     * Returns the sum of the element-wise max of a and b.
-     * For example if a = {1, -10, 3} and b = {0, 20, 5},
-     * the elementwise max is {1, 20, 5}, which sums to 26.
+     * 返回 a 和 b 的元素最大值之和。
+     * 例如，如果 a = {1， -10， 3} 且 b = {0， 20， 5}，
+     * 元素最大值为 {1， 20， 5}，总和为 26。
      */
     public static int sumOfElementwiseMax(int[] a, int[] b) {
         int[] maxes = arrayMax(a, b);

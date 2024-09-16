@@ -3,6 +3,7 @@ package adventure;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,13 @@ public class BeeCountingStage implements AdventureStage {
     public BeeCountingStage(In in) {
         this.in = in;
         this.responses = Map.of("go", new SpeciesListStage(in));
+        this.input = new ArrayList<>();
     }
 
     /**
-     * Gives prompt for number of bees and prints out 3 sets of bees that the user
-     * counts and inputs If wrong answer is given for number of bees, repeat with 3
-     * new sets of bees.
+     * 提示输入蜜蜂数量并打印出用户 3 组蜜蜂
+     * 计数和输入 如果蜜蜂数量给出错误的答案，则重复 3
+     * 新蜜蜂组。
      */
     @Override
     public void playStage() {
@@ -76,14 +78,14 @@ public class BeeCountingStage implements AdventureStage {
     }
 
     /**
-     * Uses this.input (the user's number inputs) to calculate the sum of
-     * this.input.
+     * 使用 this.input（用户的数字输入）计算
+     * this.input 的
      *
-     * @return sum of elements in this.input.
+     * @return this.input 中的元素之和。
      */
     private int sumInput() {
         int sum = 0;
-        for (int i = 0; i <= this.input.size(); i++) {
+        for (int i = 0; i < this.input.size(); i++) {
             sum += Integer.parseInt(this.input.get(i));
         }
         return sum;

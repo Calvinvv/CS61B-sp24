@@ -68,17 +68,18 @@ public class PalindromeStage implements AdventureStage {
             reversed = new IntList(l.first, reversed);
             l = l.rest;
         }
+        reversed = new IntList(l.first, reversed);
+
         return reversed;
     }
-
     /**
      * Given an input string of digits, converts it into an IntList of single-digit ints.
      * For example, the string "606" is converted to 6 -> 0 -> 6.
      */
     private static IntList digitsToIntList(String s) {
         int[] a = new int[s.length()];
-        for (int i = s.length(); i > 0; i++) {
-            a[s.length() - i] = Character.getNumericValue(s.charAt(i));
+        for (int i = s.length(); i > 0; i--) {
+            a[s.length() - i] = Character.getNumericValue(s.charAt(i - 1));
         }
         return IntList.of(a);
     }
