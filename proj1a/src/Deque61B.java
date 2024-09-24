@@ -1,15 +1,15 @@
 import java.util.List;
 
 /**
- * Created by hug on 2/4/2017. Methods are provided in the suggested order
- * that they should be completed.
+ * 由 hug 于 2017 年 2 月 4 日创建。方法按建议的顺序提供
+ * 他们应该完成。
  */
 public interface Deque61B<T> {
 
     /**
-     * Add {@code x} to the front of the deque. Assumes {@code x} is never null.
+     * 将 {@code x} 添加到双端队列的前面。假设 {@code x} 永远不会为 null。
      *
-     * @param x item to add
+     * @param x 项添加
      */
     void addFirst(T x);
 
@@ -21,16 +21,16 @@ public interface Deque61B<T> {
     void addLast(T x);
 
     /**
-     * Returns a List copy of the deque. Does not alter the deque.
+     * 返回 deque 的 List 副本。不改变 deque。
      *
-     * @return a new list copy of the deque.
+     * @return deque 的新列表副本。
      */
     List<T> toList();
 
     /**
-     * Returns if the deque is empty. Does not alter the deque.
+     * 如果 deque 为空，则返回。不改变 deque。
      *
-     * @return {@code true} if the deque has no elements, {@code false} otherwise.
+     * 如果双端队列没有元素，则@return {@code true}，否则为 {@code false}。
      */
     boolean isEmpty();
 
@@ -56,10 +56,10 @@ public interface Deque61B<T> {
     T removeLast();
 
     /**
-     * The Deque61B abstract data type does not typically have a get method,
-     * but we've included this extra operation to provide you with some
-     * extra programming practice. Gets the element, iteratively. Returns
-     * null if index is out of bounds. Does not alter the deque.
+     * Deque61B 抽象数据类型通常没有 get 方法，
+     * 但是我们包含了这个额外的操作，以便为您提供一些
+     * 额外的编程练习。迭代获取元素。返回
+     * 如果 index 超出范围，则为 null。不改变 deque。
      *
      * @param index index to get
      * @return element at {@code index} in the deque
@@ -70,6 +70,9 @@ public interface Deque61B<T> {
      * This method technically shouldn't be in the interface, but it's here
      * to make testing nice. Gets an element, recursively. Returns null if
      * index is out of bounds. Does not alter the deque.
+     ** 从技术上讲，此方法不应出现在界面中，但它就在这里
+     * 使测试更好。以递归方式获取一个元素。如果满足以下条件，则返回 null
+     * index 超出范围。不改变 deque。
      *
      * @param index index to get
      * @return element at {@code index} in the deque
